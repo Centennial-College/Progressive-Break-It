@@ -14,7 +14,7 @@
 (function () {
     //GAME VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //stage and game visuals
-    let canvas, stage, paddle, puck, board, scoreTxt, livesTxt, messageTxt, messageInterval;
+    let canvas, stage: createjs.Stage, paddle, puck, board, scoreTxt, livesTxt, messageTxt, messageInterval;
 
     //game controls
     let leftWall, rightWall, ceiling, floor;
@@ -48,5 +48,59 @@
         { color: '#1a6d68', points: 12 }
     ]
 
+    //GAME INITIALIZATION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    function init() {
+        canvas = document.getElementById('canvas');
+        stage = new createjs.Stage(canvas);
+        newGame();
+        startGame();
+    }
 
+    function newGame(): void {
+        buildWalls();
+        buildMessageBoard();
+        buildPaddle();
+        buildPuck();
+        setControls();
+        newLevel();
+        newLevel();
+    }
+
+    function startGame(): void {
+        createjs.Ticker.framerate = 60;
+        createjs.Ticker.on('tick', (e) => {
+            if (!e.paused) {
+                stage.update();
+            }
+        })
+    }
+
+    //Creating the Walls
+    function buildWalls(): void {
+        //drawing the left wall
+        let wall = new createjs.Shape();
+        wall.graphics.beginFill('#333')
+            .drawRect(0, 0, config.Game.WALL_THICKNESS, canvas.height);
+        stage.addChild(wall);
+
+        //drawing the right wall
+        wall = new createjs.Shape();
+        wall.graphics.beginFill('#333')
+            .drawRect(0, 0, config.Game.WALL_THICKNESS, canvas.height);
+        wall.x = canvas.width - config.Game.WALL_THICKNESS;
+        stage.addChild(wall);
+
+        //drawing the ceiling
+        wall = new createjs.Shape();
+        wall.graphics.beginFill('#333')
+            .drawRect(0, 0, canvas.width, config.Game.WALL_THICKNESS);
+        stage.addChild(wall);
+
+        //setting values for the properties, makes it easier to reference later
+        leftWall = config.Game.WALL_THICKNESS;
+        rightWall = canvas.width - config.Game.WALL_THICKNESS;
+        ceiling = config.Game.WALL_THICKNESS;
+    }
+
+    window.onload = init;
 })();

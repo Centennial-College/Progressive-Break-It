@@ -42,5 +42,53 @@
         { color: '#c6c43b', points: 11 },
         { color: '#1a6d68', points: 12 }
     ];
+    //GAME INITIALIZATION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    function init() {
+        canvas = document.getElementById('canvas');
+        stage = new createjs.Stage(canvas);
+        newGame();
+        startGame();
+    }
+    function newGame() {
+        buildWalls();
+        buildMessageBoard();
+        buildPaddle();
+        buildPuck();
+        setControls();
+        newLevel();
+        newLevel();
+    }
+    function startGame() {
+        createjs.Ticker.framerate = 60;
+        createjs.Ticker.on('tick', function (e) {
+            if (!e.paused) {
+                stage.update();
+            }
+        });
+    }
+    //Creating the Walls
+    function buildWalls() {
+        //drawing the left wall
+        var wall = new createjs.Shape();
+        wall.graphics.beginFill('#333')
+            .drawRect(0, 0, config.Game.WALL_THICKNESS, canvas.height);
+        stage.addChild(wall);
+        //drawing the right wall
+        wall = new createjs.Shape();
+        wall.graphics.beginFill('#333')
+            .drawRect(0, 0, config.Game.WALL_THICKNESS, canvas.height);
+        wall.x = canvas.width - config.Game.WALL_THICKNESS;
+        stage.addChild(wall);
+        //drawing the ceiling
+        wall = new createjs.Shape();
+        wall.graphics.beginFill('#333')
+            .drawRect(0, 0, canvas.width, config.Game.WALL_THICKNESS);
+        stage.addChild(wall);
+        //setting values for the properties, makes it easier to reference later
+        leftWall = config.Game.WALL_THICKNESS;
+        rightWall = canvas.width - config.Game.WALL_THICKNESS;
+        ceiling = config.Game.WALL_THICKNESS;
+    }
+    window.onload = init;
 })();
 //# sourceMappingURL=game.js.map
