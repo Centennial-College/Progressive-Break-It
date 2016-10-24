@@ -11,5 +11,36 @@
  *      -All controls handled by k/b => move paddle, pause or play the game
  */
 (function () {
+    //GAME VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //stage and game visuals
+    var canvas, stage, paddle, puck, board, scoreTxt, livesTxt, messageTxt, messageInterval;
+    //game controls
+    var leftWall, rightWall, ceiling, floor;
+    //initialized variables - should be reset when restarting the game
+    var leftKeyDown = false;
+    var rightKeyDown = false;
+    var bricks = []; // starts empty, references all bricks created in the game
+    var paddleHits = 0; //determine when a new level should be added to the board
+    var combo = 0; //# rows destroyed before hitting the paddle
+    var lives = 5;
+    var score = 0;
+    var level = 0;
+    var gameRunning = true; //true? spacebar = pause game : spacebar = restart game 
+    //level data - each index in the levels array holds an obj that determines the color of bricks and the pts
+    //each one is worth when busted
+    var levels = [
+        { color: '#705000', points: 1 },
+        { color: '#743fab', points: 2 },
+        { color: '#4f5e04', points: 3 },
+        { color: '#1b5b97', points: 4 },
+        { color: '#c6c43b', points: 5 },
+        { color: '#1a6d68', points: 6 },
+        { color: '#aa7223', points: 7 },
+        { color: '#743fab', points: 8 },
+        { color: '#4f5e04', points: 9 },
+        { color: '#1b5b97', points: 10 },
+        { color: '#c6c43b', points: 11 },
+        { color: '#1a6d68', points: 12 }
+    ];
 })();
 //# sourceMappingURL=game.js.map
