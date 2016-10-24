@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/65349c521af7101550c1cfa4b00f242d56300c9c/easeljs/easeljs.d.ts",
+    "raw": "registry:dt/easeljs#0.8.0+20160414061141",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/65349c521af7101550c1cfa4b00f242d56300c9c/easeljs/easeljs.d.ts"
+  }
+}
