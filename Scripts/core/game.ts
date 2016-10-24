@@ -14,7 +14,8 @@
 (function () {
     //GAME VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //stage and game visuals
-    let canvas, stage: createjs.Stage, paddle, puck, board, scoreTxt, livesTxt, messageTxt, messageInterval;
+    let canvas, stage: createjs.Stage, paddle, puck, board: createjs.Shape,
+        scoreTxt: createjs.Text, livesTxt: createjs.Text, messageTxt: createjs.Text, messageInterval;
 
     //game controls
     let leftWall, rightWall, ceiling, floor;
@@ -59,11 +60,11 @@
     function newGame(): void {
         buildWalls();
         buildMessageBoard();
-        buildPaddle();
-        buildPuck();
-        setControls();
-        newLevel();
-        newLevel();
+        // buildPaddle();
+        // buildPuck();
+        // setControls();
+        // newLevel();
+        // newLevel();
     }
 
     function startGame(): void {
@@ -100,6 +101,36 @@
         leftWall = config.Game.WALL_THICKNESS;
         rightWall = canvas.width - config.Game.WALL_THICKNESS;
         ceiling = config.Game.WALL_THICKNESS;
+    }
+
+    //Creating the Message board - displays various game messages
+    function buildMessageBoard(): void {
+        //message board at bottom of screen, above the floor where paddel rests
+        board = new createjs.Shape();
+        board.graphics.beginFill('#333')
+            .drawRect(0, 0, canvas.width, config.Game.SCORE_BOARD_HEIGHT);
+        board.y = canvas.height - config.Game.SCORE_BOARD_HEIGHT;
+        stage.addChild(board)
+
+        //lives text
+        livesTxt = new createjs.Text('lives: ' + lives, '20px Times', '#fff');
+        livesTxt.y = board.y + 10;
+        livesTxt.x = config.Game.WALL_THICKNESS;
+        stage.addChild(livesTxt);
+
+        //score text
+        scoreTxt = new createjs.Text('score: ' + score, '20px Times', '#fff');
+        scoreTxt.textAlign = 'right';
+        scoreTxt.y = board.y + 10;
+        scoreTxt.x = canvas.width - config.Game.WALL_THICKNESS;
+        stage.addChild(scoreTxt);
+
+        //message text
+        messageTxt = new createjs.Text('press spacebar to pause', '18px Times', '#fff');
+        messageTxt.textAlign = 'center';
+        messageTxt.y = board.y + 10;
+        messageTxt.x = canvas.width / 2;
+        stage.addChild(messageTxt);
     }
 
     window.onload = init;
