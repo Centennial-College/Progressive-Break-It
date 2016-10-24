@@ -1,17 +1,15 @@
 /// <reference path="_reference.ts" />
+/**
+ *
+ * @author Kevin Ma
+ * @date Oct 24 2016
+ * @description Based on the Atari classic, Breakout. Hands-on Project of Chapter 4 in Apress
+ * Beginning HTML5 Games with CreateJS 2014
+ *      -Progressive mode, continuously adding rows of bricks as the game progresses
+ *      -Graphics built 100% using EaselJS's drawing API and Text objects
+ *      -TweenJS library used to animate some of the bonus text during gameplay
+ *      -All controls handled by k/b => move paddle, pause or play the game
+ */
 (function () {
-    var stage;
-    function init() {
-        console.log('app started');
-        stage = new createjs.Stage(document.getElementById('canvas'));
-        var el = new createjs.DOMElement(document.getElementById('instructions'));
-        el.alpha = 0;
-        el.regX = 200;
-        el.x = stage.canvas.width / 2;
-        el.y = 400;
-        stage.addChild(el);
-        createjs.Tween.get(el).wait(1000).to({ y: 40, alpha: 1 }, 2000, createjs.Ease.quadOut);
-    }
-    window.onload = init;
 })();
 //# sourceMappingURL=game.js.map
