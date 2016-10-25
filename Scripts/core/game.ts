@@ -316,5 +316,69 @@
         puck.nextY = nextY;
     }
 
+    //checking for collisions
+    function checkPaddle() {
+        //checking if puck collided with the paddel
+        //only need to check this if the puck is moving downwards, velY > 0
+        if (puck.velY > 0 && puck.isAlive && puck.nextY > (paddle.y –
+         paddle.height) && puck.nextX >= paddle.x && puck.nextX <=
+         (paddle.x + paddle.width)) {
+            puck.nextY = paddle.y - puck.height;
+
+            //some var need to be reset if hit paddle
+            //combo counts # consecutive brick hits before reaching paddle again
+            combo = 0;
+            paddleHits++;   //determines whether to add new level of bricks to the board
+            puck.velY *= -1;
+        } 
+    }
+
+    //most complex function!
+    function checkBricks() {
+        if(!puck.isAlive){
+            return; 
+        }
+        var i, brick;
+        for (i = 0; i < bricks.length; i++) {
+            brick = bricks[i];
+            if (puck.nextY >= brick.y && 
+                puck.nextY <= (brick.y + brick.height) && 
+                puck.nextX >= brick.x && 
+                puck.nextX <= (brick.x + brick.width)) 
+            {
+                score += brick.points;
+                combo++;
+                if (brick.freeLife) {
+                    lives++;
+                    createjs.Tween.get(brick.freeLife)
+                    .to({alpha:0, y:brick.freeLife.y - 100}, 1000)
+                    .call(function () {
+                        stage.removeChild(this);
+                    });
+                }
+                if (combo > 4) {
+                    score += (combo * 10);
+                    var comboTxt = new createjs.Text('COMBO X' + (combo * 10),
+                    '14px Times', '#FF0000');
+                    comboTxt.x = brick.x;
+                    comboTxt.y = brick.y;
+                    comboTxt.regX = brick.width / 2;
+                    comboTxt.regY = brick.height / 2;
+                    comboTxt.alpha = 0;
+                    stage.addChild(comboTxt);
+                    createjs.Tween.get(comboTxt)
+                    .to({alpha:1, scaleX:2, scaleY:2, y:comboTxt.y - 60}, 1000)
+                    .call(function () {
+                        stage.removeChild(this);
+                    });
+                }
+                stage.removeChild(brick);
+                bricks.splice(i, 1);
+                puck.velY *= -1;
+                break;
+            } 
+        }
+    }
+
     window.onload = init;
 })();

@@ -288,6 +288,22 @@
         puck.nextX = nextX;
         puck.nextY = nextY;
     }
+    //checking for collisions
+    function checkPaddle() {
+        //checking if puck collided with the paddel
+        //only need to check this if the puck is moving downwards, velY > 0
+        if (puck.velY > 0 && puck.isAlive && puck.nextY > (paddle.y))
+            ;
+        paddle.height;
+         && puck.nextX >= paddle.x && puck.nextX <=
+            (paddle.x + paddle.width);
+        {
+            puck.nextY = paddle.y - puck.height;
+            combo = 0;
+            paddleHits++;
+            puck.velY *= -1;
+        }
+    }
     window.onload = init;
 })();
 //# sourceMappingURL=game.js.map
