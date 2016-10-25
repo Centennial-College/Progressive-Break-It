@@ -54,9 +54,9 @@
         buildMessageBoard();
         buildPaddle();
         buildPuck();
-        // setControls();
-        // newLevel();
-        // newLevel();
+        setControls();
+        newLevel();
+        newLevel();
     }
     function startGame() {
         createjs.Ticker.framerate = 60;
@@ -133,14 +133,48 @@
             .drawRect(0, 0, 10, 10);
         puck.width = 10;
         puck.height = 10;
-        puck.x = canvas.width / 2;
-        puck.y = canvas.height / 2;
+        puck.x = canvas.width - 100;
+        puck.y = 160;
         puck.velX = puck.velY = config.Game.PUCK_SPEED;
         puck.isAlive = true;
         //adds the puck to the botom layer of the stage 
         //this ensures that it travels under the scoreboard when it flies out of bounds 
         //beneath the floor
         stage.addChildAt(puck, 0);
+    }
+    //Adding controls
+    function setControls() {
+        window.onkeydown = handleKeyDown;
+        window.onkeyup = handleKeyUp;
+    }
+    function handleKeyDown(e) {
+        switch (e.keyCode) {
+            case config.Game.ARROW_KEY_LEFT:
+                leftKeyDown = true;
+                break;
+            case config.Game.ARROW_KEY_RIGHT:
+                rightKeyDown = true;
+                break;
+        }
+    }
+    function handleKeyUp(e) {
+        switch (e.keyCode) {
+            case config.Game.ARROW_KEY_LEFT:
+                leftKeyDown = false;
+                break;
+            case config.Game.ARROW_KEY_RIGHT:
+                rightKeyDown = false;
+                break;
+            case config.Game.SPACE_KEY:
+                if (gameRunning) {
+                    createjs.Ticker.setPaused(createjs.Ticker.getPaused() ? false
+                        : true);
+                }
+                else {
+                    resetGame();
+                }
+                break;
+        }
     }
     window.onload = init;
 })();
