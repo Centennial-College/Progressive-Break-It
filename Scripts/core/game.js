@@ -359,6 +359,28 @@
         livesTxt.text = "lives: " + lives;
         scoreTxt.text = "score: " + score;
     }
+    //Evaluate scenarios - loss of a life, new level, end game
+    function evalPuck() {
+        if (puck.y > paddle.y) {
+            puck.isAlive = false;
+        }
+        if (puck.y > canvas.height + 200) {
+            puck.y = bricks[0].y + bricks[0].height + 40;
+            puck.x = canvas.width / 2;
+            puck.velX *= -1;
+            puck.isAlive = true;
+            combo = 0;
+            lives--;
+        }
+    }
+    function evalGame() {
+        if (lives < 0 || bricks[0].y > board.y) {
+            gameOver();
+        }
+        if (paddleHits == config.Game.PADDLE_HITS_FOR_NEW_LEVEL) {
+            newLevel();
+        }
+    }
     window.onload = init;
 })();
 //# sourceMappingURL=game.js.map

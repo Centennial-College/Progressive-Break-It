@@ -320,10 +320,10 @@
     function checkPaddle() {
         //checking if puck collided with the paddel
         //only need to check this if the puck is moving downwards, velY > 0
-        if (puck.velY > 0 && 
-            puck.isAlive && 
-            puck.nextY > (paddle.y - paddle.height) && 
-            puck.nextX >= paddle.x && 
+        if (puck.velY > 0 &&
+            puck.isAlive &&
+            puck.nextY > (paddle.y - paddle.height) &&
+            puck.nextX >= paddle.x &&
             puck.nextX <= (paddle.x + paddle.width)) {
             puck.nextY = paddle.y - puck.height;
 
@@ -332,38 +332,37 @@
             combo = 0;
             paddleHits++;   //determines whether to add new level of bricks to the board
             puck.velY *= -1;
-        } 
+        }
     }
 
     //most complex function!
     function checkBricks() {
-        if(!puck.isAlive){
-            return; 
+        if (!puck.isAlive) {
+            return;
         }
         var i, brick;
         for (i = 0; i < bricks.length; i++) {
             brick = bricks[i];
             //handle collision and exit loop
             //only need to detect one brick collision per update cycle
-            if (puck.nextY >= brick.y && 
-                puck.nextY <= (brick.y + brick.height) && 
-                puck.nextX >= brick.x && 
-                puck.nextX <= (brick.x + brick.width)) 
-            {
+            if (puck.nextY >= brick.y &&
+                puck.nextY <= (brick.y + brick.height) &&
+                puck.nextX >= brick.x &&
+                puck.nextX <= (brick.x + brick.width)) {
                 score += brick.points;
                 combo++;
                 if (brick.freeLife) {
                     lives++;
                     createjs.Tween.get(brick.freeLife)
-                    .to({alpha:0, y:brick.freeLife.y - 100}, 1000)
-                    .call(function () {
-                        stage.removeChild(this);
-                    });
+                        .to({ alpha: 0, y: brick.freeLife.y - 100 }, 1000)
+                        .call(function () {
+                            stage.removeChild(this);
+                        });
                 }
                 if (combo > 4) {
                     score += (combo * 10);
                     var comboTxt = new createjs.Text('COMBO X' + (combo * 10),
-                    '14px Times', '#FF0000');
+                        '14px Times', '#FF0000');
                     comboTxt.x = brick.x;
                     comboTxt.y = brick.y;
                     comboTxt.regX = brick.width / 2;
@@ -371,16 +370,16 @@
                     comboTxt.alpha = 0;
                     stage.addChild(comboTxt);
                     createjs.Tween.get(comboTxt)
-                    .to({alpha:1, scaleX:2, scaleY:2, y:comboTxt.y - 60}, 1000)
-                    .call(function () {
-                        stage.removeChild(this);
-                    });
+                        .to({ alpha: 1, scaleX: 2, scaleY: 2, y: comboTxt.y - 60 }, 1000)
+                        .call(function () {
+                            stage.removeChild(this);
+                        });
                 }
                 stage.removeChild(brick);
                 bricks.splice(i, 1);
                 puck.velY *= -1;
                 break;
-            } 
+            }
         }
     }
 
@@ -391,6 +390,29 @@
         puck.y = puck.nextY;
         livesTxt.text = "lives: " + lives;
         scoreTxt.text = "score: " + score;
+    }
+
+    //Evaluate scenarios - loss of a life, new level, end game
+    function evalPuck() {
+        if (puck.y > paddle.y) {
+            puck.isAlive = false;
+        }
+        if (puck.y > canvas.height + 200) {
+            puck.y = bricks[0].y + bricks[0].height + 40;
+            puck.x = canvas.width / 2;
+            puck.velX *= -1;
+            puck.isAlive = true;
+            combo = 0;
+            lives--;
+        }
+    }
+    function evalGame() {
+        if (lives < 0 || bricks[0].y > board.y) {
+            gameOver();
+        }
+        if (paddleHits == config.Game.PADDLE_HITS_FOR_NEW_LEVEL) {
+            newLevel();
+        }
     }
 
     window.onload = init;
