@@ -58,14 +58,6 @@
         newLevel();
         newLevel();
     }
-    function startGame() {
-        createjs.Ticker.framerate = 60;
-        createjs.Ticker.on('tick', function (e) {
-            if (!e.paused) {
-                stage.update();
-            }
-        });
-    }
     //Creating the Walls
     function buildWalls() {
         //drawing the left wall
@@ -234,6 +226,24 @@
                 brick.freeLife.y += shiftHeight;
             }
         }
+    }
+    //GAME LOOP +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    function startGame() {
+        createjs.Ticker.framerate = 60;
+        createjs.Ticker.on('tick', function (e) {
+            if (!e.paused) {
+                runGame();
+                stage.update();
+            }
+        });
+    }
+    function runGame() {
+        //executes the update/render cycle
+        update();
+        render();
+        //determines end level and/or end game scenarios
+        evalPuck();
+        evalGame();
     }
     window.onload = init;
 })();
