@@ -52,8 +52,8 @@
     function newGame() {
         buildWalls();
         buildMessageBoard();
-        // buildPaddle();
-        // buildPuck();
+        buildPaddle();
+        buildPuck();
         // setControls();
         // newLevel();
         // newLevel();
@@ -114,6 +114,33 @@
         messageTxt.y = board.y + 10;
         messageTxt.x = canvas.width / 2;
         stage.addChild(messageTxt);
+    }
+    //Creating the Paddle and puck
+    function buildPaddle() {
+        paddle = new createjs.Shape();
+        paddle.width = config.Game.PADDLE_WIDTH;
+        paddle.height = 20;
+        paddle.graphics.beginFill('#3e6dc0')
+            .drawRect(0, 0, paddle.width, paddle.height);
+        paddle.nextX = 0;
+        paddle.x = 20;
+        paddle.y = canvas.height - paddle.height - config.Game.SCORE_BOARD_HEIGHT;
+        stage.addChild(paddle);
+    }
+    function buildPuck() {
+        puck = new createjs.Shape();
+        puck.graphics.beginFill('#fff')
+            .drawRect(0, 0, 10, 10);
+        puck.width = 10;
+        puck.height = 10;
+        puck.x = canvas.width / 2;
+        puck.y = canvas.height / 2;
+        puck.velX = puck.velY = config.Game.PUCK_SPEED;
+        puck.isAlive = true;
+        //adds the puck to the botom layer of the stage 
+        //this ensures that it travels under the scoreboard when it flies out of bounds 
+        //beneath the floor
+        stage.addChildAt(puck, 0);
     }
     window.onload = init;
 })();
