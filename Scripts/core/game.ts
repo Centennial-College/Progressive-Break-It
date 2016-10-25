@@ -198,5 +198,51 @@
         }
     }
 
+    //Adding Levels 
+    function newLevel() {
+        var i, brick, freeLifeTxt;
+        var data = levels[level];
+        var xPos = config.Game.WALL_THICKNESS;
+        var yPos = config.Game.WALL_THICKNESS;
+        var freeLife = Math.round(Math.random() * 20);
+        paddleHits = 0;
+        shiftBricksDown();
+        for (i = 0; i < 20; i++) {
+            brick = new createjs.Shape();
+            brick.graphics.beginFill(i == freeLife ? '#009900' : data.color);
+            brick.graphics.drawRect(0, 0, 76, 20);
+            brick.graphics.endFill();
+            brick.width = 76;
+            brick.height = 20;
+            brick.x = xPos;
+            brick.y = yPos;
+            brick.points = data.points;
+            brick.freeLife = false;
+            bricks.push(brick);
+            stage.addChild(brick);
+            if (i == freeLife) {
+                freeLifeTxt = new createjs.Text('1UP', '12px Times', '#fff');
+                freeLifeTxt.x = brick.x + (brick.width / 2);
+                freeLifeTxt.y = brick.y + 4;
+                freeLifeTxt.width = brick.width;
+                freeLifeTxt.textAlign = 'center';
+                brick.freeLife = freeLifeTxt;
+                stage.addChild(freeLifeTxt);
+            }
+            xPos += 76;
+            //move to next line if more than 10th brick
+            if (xPos > (brick.width * 10)) {
+                xPos = config.Game.WALL_THICKNESS
+                yPos += brick.height;
+            }
+        }
+        level++;
+        //only so many levels in the levels array, so you continue to use the last data object 
+        //for the remainder of the game by decreasing the level by one
+        if (level == levels.length) {
+            level--;
+        }
+    }
+
     window.onload = init;
 })();
