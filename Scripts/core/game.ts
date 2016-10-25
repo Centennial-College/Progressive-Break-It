@@ -430,5 +430,37 @@
         }, 1000);
     }
 
+    //reset game
+    function resetGame() {
+        clearInterval(messageInterval);
+        level = 0;
+        score = 0;
+        lives = 5;
+        paddleHits = 0;
+        puck.y = 160;
+        puck.velY = config.Game.PUCK_SPEED;
+        puck.visible = true;
+        paddle.visible = true;
+        messageTxt.visible = true;
+        gameRunning = true;
+        messageTxt.text = "press spacebar to pause";
+        stage.update();
+        removeBricks();
+        newLevel();
+        newLevel();
+        createjs.Ticker.setPaused(false);
+    }
+    function removeBricks() {
+        var i, brick;
+        for (i = 0; i < bricks.length; i++) {
+            brick = bricks[i];
+            if (brick.freeLife) {
+                stage.removeChild(brick.freeLife);
+            }
+            stage.removeChild(brick);
+        }
+        bricks = [];
+    }
+
     window.onload = init;
 })();
