@@ -415,5 +415,20 @@
         }
     }
 
+    //gameOver
+    function gameOver() {
+        createjs.Ticker.setPaused(true);
+        gameRunning = false;
+        messageTxt.text = "press spacebar to play";
+        puck.visible = false;
+        paddle.visible = false;
+        stage.update();
+        //causes the message to blink at the bottom
+        messageInterval = setInterval(function () {
+            messageTxt.visible = messageTxt.visible ? false : true;
+            stage.update();
+        }, 1000);
+    }
+
     window.onload = init;
 })();
