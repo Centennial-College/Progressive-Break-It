@@ -320,9 +320,11 @@
     function checkPaddle() {
         //checking if puck collided with the paddel
         //only need to check this if the puck is moving downwards, velY > 0
-        if (puck.velY > 0 && puck.isAlive && puck.nextY > (paddle.y –
-         paddle.height) && puck.nextX >= paddle.x && puck.nextX <=
-         (paddle.x + paddle.width)) {
+        if (puck.velY > 0 && 
+            puck.isAlive && 
+            puck.nextY > (paddle.y - paddle.height) && 
+            puck.nextX >= paddle.x && 
+            puck.nextX <= (paddle.x + paddle.width)) {
             puck.nextY = paddle.y - puck.height;
 
             //some var need to be reset if hit paddle
@@ -341,6 +343,8 @@
         var i, brick;
         for (i = 0; i < bricks.length; i++) {
             brick = bricks[i];
+            //handle collision and exit loop
+            //only need to detect one brick collision per update cycle
             if (puck.nextY >= brick.y && 
                 puck.nextY <= (brick.y + brick.height) && 
                 puck.nextX >= brick.x && 
@@ -378,6 +382,15 @@
                 break;
             } 
         }
+    }
+
+    //Rendering the Game Elements
+    function render() {
+        paddle.x = paddle.nextX;
+        puck.x = puck.nextX;
+        puck.y = puck.nextY;
+        livesTxt.text = "lives: " + lives;
+        scoreTxt.text = "score: " + score;
     }
 
     window.onload = init;
