@@ -244,5 +244,20 @@
         }
     }
 
+    //Shifting the Bricks - make room for subsequent levels
+    function shiftBricksDown() {
+        var i, brick;
+        var shiftHeight = 80;
+        var len = bricks.length;
+        for (i = 0; i < len; i++) {
+            brick = bricks[i];
+            brick.y += shiftHeight;
+            //shifts the free life text objects tied to a brick 
+            if (brick.freeLife) {
+                brick.freeLife.y += shiftHeight;
+            }
+        }
+    }
+
     window.onload = init;
 })();
