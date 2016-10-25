@@ -270,5 +270,51 @@
         evalGame();
     }
 
+    //updating game elements in the game loop
+    //the update cycle evaluates the next position of the puck and paddle, and 
+    //how they will affect the game in regards to collision and bounds.
+    function update() {
+        updatePaddle();
+        updatePuck();
+        checkPaddle();
+        checkBricks();
+    }
+
+    function updatePaddle() {
+        var nextX = paddle.x;
+        if (leftKeyDown) {
+            nextX = paddle.x - config.Game.PADDLE_SPEED;
+            if (nextX < leftWall) {
+                nextX = leftWall;
+            }
+        }
+        else if (rightKeyDown) {
+            nextX = paddle.x + config.Game.PADDLE_SPEED;
+            if (nextX > rightWall - paddle.width) {
+                nextX = rightWall - paddle.width;
+            }
+        }
+        paddle.nextX = nextX;
+    }
+
+    function updatePuck() {
+        var nextX = puck.x + puck.velX;
+        var nextY = puck.y + puck.velY;
+        if (nextX < leftWall) {
+            nextX = leftWall;
+            puck.velX *= -1;
+        }
+        else if (nextX > (rightWall - puck.width)) {
+            nextX = rightWall - puck.width;
+            puck.velX *= -1;
+        }
+        if (nextY < (ceiling)) {
+            nextY = ceiling;
+            puck.velY *= -1;
+        }
+        puck.nextX = nextX;
+        puck.nextY = nextY;
+    }
+
     window.onload = init;
 })();
